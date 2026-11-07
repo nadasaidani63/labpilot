@@ -1,0 +1,41 @@
+#cloud-config
+hostname: RaspberryPi
+manage_etc_hosts: true
+packages:
+- avahi-daemon
+apt:
+  conf: |
+    Acquire {
+      Check-Date "false";
+    };
+timezone: Africa/Tunis
+keyboard:
+  model: pc105
+  layout: "am"
+enable_ssh: true
+users:
+- name: nada
+  groups: users,adm,dialout,audio,netdev,video,plugdev,cdrom,games,input,gpio,spi,i2c,render,sudo
+  shell: /bin/bash
+  lock_passwd: false
+  passwd: $y$jB5$is2I8x4HDJYKJF1KY/ZFd/$L8ZFHVh7GSIbn6Eq8NmAtoUs8Y1PFRRpBN2vClcpdo3
+ssh_pwauth: true
+rpi:
+  interfaces:
+    serial: true
+runcmd:
+  - [ sh, -c, "install -o nada -m 700 -d /home/nada/.config/com.raspberrypi.connect" ]
+  - [ sh, -c, "printf '%s\n' 'rpuak_ww9EmA5sncztrm8ibUmZzUXT' > /home/nada/.config/com.raspberrypi.connect/auth.key && chown nada:nada /home/nada/.config/com.raspberrypi.connect/auth.key && chmod 600 /home/nada/.config/com.raspberrypi.connect/auth.key" ]
+  - [ sh, -c, "install -o nada -m 700 -d /home/nada/.config/systemd/user/default.target.wants /home/nada/.config/systemd/user/paths.target.wants" ]
+  - [ sh, -c, "UNIT_SRC=/usr/lib/systemd/user/rpi-connect.service; [ -f $UNIT_SRC ] || UNIT_SRC=/lib/systemd/user/rpi-connect.service; ln -sf $UNIT_SRC /home/nada/.config/systemd/user/default.target.wants/rpi-connect.service" ]
+  - [ sh, -c, "UNIT_SRC=/usr/lib/systemd/user/rpi-connect-signin.path; [ -f $UNIT_SRC ] || UNIT_SRC=/lib/systemd/user/rpi-connect-signin.path; ln -sf $UNIT_SRC /home/nada/.config/systemd/user/paths.target.wants/rpi-connect-signin.path" ]
+  - [ sh, -c, "UNIT_SRC=/usr/lib/systemd/user/rpi-connect-wayvnc.service; [ -f $UNIT_SRC ] || UNIT_SRC=/lib/systemd/user/rpi-connect-wayvnc.service; ln -sf $UNIT_SRC /home/nada/.config/systemd/user/default.target.wants/rpi-connect-wayvnc.service" ]
+  - [ sh, -c, "chown -R nada:nada /home/nada/.config/systemd" ]
+  - [ sh, -c, "install -d -m 0755 /var/lib/systemd/linger" ]
+  - [ sh, -c, "install -m 0644 /dev/null /var/lib/systemd/linger/nada" ]
+  - [ sh, -c, "loginctl enable-linger nada 2>/dev/null || true" ]
+  - [ sleep, "2" ]
+  - [ sh, -c, "systemctl --quiet --user --machine=nada@.host daemon-reload || true" ]
+  - [ sh, -c, "systemctl --quiet --user --machine=nada@.host start rpi-connect.service || true" ]
+  - [ sh, -c, "systemctl --quiet --user --machine=nada@.host start rpi-connect-signin.path || true" ]
+  - [ sh, -c, "systemctl --quiet --user --machine=nada@.host start rpi-connect-wayvnc.service || true" ]

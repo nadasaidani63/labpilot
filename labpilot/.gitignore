@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# Secrets and credentials (never commit these)
+.env
+*.pem
+*.key
+*.ppk
+id_rsa*
+wifi*.txt
+secrets*
+
+# Raspberry Pi / system images
+*.img
+*.img.xz
+*.iso
+
+# Captured media and raw frames (link large videos instead)
+captures/
+frames/
+*.mp4
+*.avi
+*.mov
+*.h264
+
+# Run logs generated on the machine (keep only curated examples in data/)
+runs/
+*.log
+
+# Arduino / build output
+build/
+*.elf
+*.hex
+
+# Editors and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Archives
+*.zip

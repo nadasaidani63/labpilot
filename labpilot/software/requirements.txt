@@ -1,0 +1,7 @@
+# Raspberry Pi software dependencies.
+# Verify against your real environment with:  pip freeze
+# On Raspberry Pi OS, OpenCV and Picamera2 are often easier to install with apt:
+#   sudo apt install python3-opencv python3-picamera2
+numpy
+opencv-python
+pyserial

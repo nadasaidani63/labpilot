@@ -1,0 +1,10 @@
+network:
+  version: 2
+  wifis:
+    wlan0:
+      dhcp4: true
+      regulatory-domain: "TN"
+      access-points:
+        "iPhone nada":
+          password: "9a5d626dbb9703d01409e570dd4e4c1836b308716c5fe3d0fe88d737cc514a95"
+      optional: true
